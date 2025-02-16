@@ -1,0 +1,21 @@
+use loop
+use comments
+# Program for the regulation of miners by energy overproduction
+# Inputs:
+# d0: Cable monitor for main grid power
+# d1: Sub grid power regulator
+# d3: Miner 1
+# d4: Miner 2
+# d5: Miner 3
+var mainGridRequirement = d0.PowerRequired
+var mainGridPowerPotential = d0.PowerPotential
+var subGridPower = d1.PowerActual
+var powerWithoutSubGrid = mainGridRequirement - subGridPower
+var powerAvailable = mainGridPowerPotential - powerWithoutSubGrid 
+var miner1Active = sge(powerAvailable,500)
+var miner2Active = sge(powerAvailable,1000) 
+var miner3Active = sge(powerAvailable,1500)
+d3.On = miner1Active
+d4.On = miner2Active
+d5.On = miner3Active
+yield
