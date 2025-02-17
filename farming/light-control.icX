@@ -1,0 +1,24 @@
+use comments
+# Program to regulate light control for farming
+# Inputs:
+# d0: Farming device
+# d1: Grow light
+# d2: Growth memory cell for display
+var lastEfficiency = d0.slot(0).Efficiency
+var lastLightOn = d1.On
+loop:
+	var growth = d0.slot(0).Growth
+	var efficiency = d0.slot(0).Efficiency
+	var isSeeding = d0.slot(0).Seeding
+	var scaledEfficiency = efficiency * 1000
+	d2.Setting = scaledEfficiency
+	if efficiency < lastEfficiency && lastLightOn == 0
+		d1.On = 1
+	end
+	if efficiency < lastEfficiency && lastLightOn == 1
+		d1.On = 0
+	end
+	lastLightOn = d1.On
+	lastEfficiency = efficiency
+	sleep 30
+j loop
